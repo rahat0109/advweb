@@ -23,21 +23,24 @@ import {
 } from '@nestjs/common';
 import { RiderService } from './rider.service';
 import { RiderDto } from './rider.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
+
 import { SessionGuard } from './session.guard';
 import { RiderEntity } from './entity/rider.entity';
 import { DeliveryEntity } from './entity/delivery.entity';
 import { IssueEntity } from './entity/issue.entity';
 
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+
 @Controller('rider')
 export class RiderController {
   constructor(private readonly riderService: RiderService) {}
 
+  //Working
   //Signup + FileUpload
   @Post('/signup')
   @UseInterceptors(
-    FileInterceptor('picture', {
+    FileInterceptor('filename', {
       storage: diskStorage({
         destination: './uploads',
         filename: function (req, file, cb) {
@@ -46,12 +49,12 @@ export class RiderController {
       }),
     }),
   )
-  signUp(
+  signup(
     @Body() riderDto: RiderDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: 200000 }),
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
           new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
         ],
       }),
@@ -59,20 +62,19 @@ export class RiderController {
     file: Express.Multer.File,
   ) {
     riderDto.filename = file.filename;
-    return this.riderService.signUp(riderDto);
+    return this.riderService.signup(riderDto);
   }
 
+  //Working
   //Login
   @Post('/signin')
-  @UsePipes(new ValidationPipe())
-  async signin(@Session() session, @Body() riderDto: RiderDto) {
-    const res = await this.riderService.signin(riderDto);
-    if (res == true) {
-      session.email = riderDto.email;
-      return session.email;
-    } else {
-      throw new UnauthorizedException({ message: 'invalid credentials' });
+  async signin(@Body() loginData) {
+    const rider = await this.riderService.signin(loginData);
+
+    if (rider) {
+      return { message: 'Login successful', rider };
     }
+    return { message: 'Login failed' };
   }
 
   //Update Rider Profile
@@ -85,18 +87,24 @@ export class RiderController {
     return this.riderService.updateRiderProfileById(id, riderDto);
   }
 
+  //Working
   //Delete Rider Profile
   @Delete('/delete-rider/:id')
-  async deleteProfileById(@Param('id') id: any): Promise<void> {
-    await this.riderService.deleteRiderProfileById(id);
+  async deleteProfileById(@Param('id') id: any): Promise<any> {
+    const res = await this.riderService.deleteRiderProfileById(id);
+    if (res) {
+      return { message: 'Deleted' };
+    }
   }
 
+  //Working
   //Show all Riders
   @Get('all-rider')
   async allRider(): Promise<RiderEntity[]> {
     return this.riderService.getAllRiders();
   }
 
+  //Working
   //Search Rider by id
   @Get('search-rider/:id')
   async searchRiderById(@Param('id') id: number): Promise<RiderEntity> {
@@ -109,6 +117,7 @@ export class RiderController {
     return rider;
   }
 
+  //Not Working
   //Rider logout [Session Destroy]
   @Post('/rider-logout')
   async logout(@Session() session, @Req() request) {
@@ -122,6 +131,7 @@ export class RiderController {
   }
 
   //Show all deliveries
+  @Get('/all-deliveries')
   async allDeliveries(): Promise<DeliveryEntity[]> {
     return this.riderService.getAllDeliveries();
   }
@@ -196,6 +206,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Issue Post
   @Post('/post-issue')
   async postIssue(
@@ -237,8 +248,9 @@ export class RiderController {
     return issue;
   }
 
+  //Not working
   //Issue details
-  @Get('issue-details/:id/solved')
+  @Put('issue-details/:id/solved')
   async issueSolved(@Param('id') id: any): Promise<IssueEntity> {
     const updatedIssue = await this.riderService.markIssueAsSolved(id);
 
@@ -249,6 +261,7 @@ export class RiderController {
     return updatedIssue;
   }
 
+  //Not working
   //Send mail
   @Post('/sendemail')
   sendEmail(@Body() mydata) {

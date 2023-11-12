@@ -20,25 +20,36 @@ export class RiderService {
     private mailerService: MailerService,
   ) {}
 
-  async signUp(riderDto: RiderDto) {
+  async signup(riderDto) {
+    const existingRider = await this.riderRepo.findOne({
+      where: { email: riderDto.email },
+    });
+
+    if (existingRider) {
+      throw new Error('Email already exists. Please use a different email.');
+    }
     const salt = await bcrypt.genSalt(10);
     const hassedpassed = await bcrypt.hash(riderDto.password, salt);
     riderDto.password = hassedpassed;
     return this.riderRepo.save(riderDto);
   }
 
-  async signin(riderDto: RiderDto) {
-    if (riderDto.email != null && riderDto.password != null) {
-      const mydata = await this.riderRepo.findOneBy({ email: riderDto.email });
-      const isMatch = await bcrypt.compare(riderDto.password, mydata.password);
-      if (isMatch) {
-        return true;
-      } else {
-        return false;
+  async signin(loginData) {
+    const rider = await this.riderRepo.findOne({
+      where: [{ email: loginData.email }],
+    });
+
+    if (rider) {
+      const passwordMatch = await bcrypt.compare(
+        loginData.password,
+        rider.password,
+      );
+
+      if (passwordMatch) {
+        return rider;
       }
-    } else {
-      return false;
     }
+    return null;
   }
 
   async updateRiderProfileById(
@@ -61,13 +72,15 @@ export class RiderService {
     return rider;
   }
 
-  async deleteRiderProfileById(id: any): Promise<void> {
-    const rider = await this.riderRepo.findOne(id);
+  async deleteRiderProfileById(id: any): Promise<any> {
+    const rider = await this.riderRepo.findOne({ where: { rider_id: id } });
 
     if (!rider) {
       throw new NotFoundException('Rider not found');
+    } else {
+      await this.riderRepo.remove(rider);
+      return true;
     }
-    await this.riderRepo.remove(rider);
   }
 
   async getAllRiders(): Promise<RiderEntity[]> {
@@ -75,7 +88,7 @@ export class RiderService {
   }
 
   async getRiderById(id: any): Promise<RiderEntity | null> {
-    return await this.riderRepo.findOne(id);
+    return await this.riderRepo.findOne({ where: { rider_id: id } });
   }
 
   async getAllDeliveries(): Promise<DeliveryEntity[]> {

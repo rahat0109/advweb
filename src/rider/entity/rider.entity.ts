@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { IssueEntity } from './issue.entity';
-import { DeliveryEntity } from './delivery.entity'; // Import the DeliveryEntity
+import { DeliveryEntity } from './delivery.entity';
 
 @Entity('rider')
 export class RiderEntity extends BaseEntity {
