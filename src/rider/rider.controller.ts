@@ -36,8 +36,6 @@ import { diskStorage } from 'multer';
 export class RiderController {
   constructor(private readonly riderService: RiderService) {}
 
-  //Working
-  //Signup + FileUpload
   @Post('/signup')
   @UseInterceptors(
     FileInterceptor('filename', {
@@ -65,8 +63,7 @@ export class RiderController {
     return this.riderService.signup(riderDto);
   }
 
-  //Working
-  //Login
+  
   @Post('/signin')
   async signin(@Body() loginData) {
     const rider = await this.riderService.signin(loginData);
@@ -130,12 +127,24 @@ export class RiderController {
     }
   }
 
+  //Working
+  //Delivery Post
+  @Post('/create-delivery')
+  async createDelivery(
+    @Body() deliveryData: Partial<DeliveryEntity>,
+  ): Promise<DeliveryEntity> {
+    const newDelivery = await this.riderService.createDelivery(deliveryData);
+    return newDelivery;
+  }
+
+  //Working
   //Show all deliveries
   @Get('/all-deliveries')
   async allDeliveries(): Promise<DeliveryEntity[]> {
     return this.riderService.getAllDeliveries();
   }
 
+  //Working
   //Delivery Details by ID
   @Get('/delivery-details/:id')
   async deliveryDetails(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -147,6 +156,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Delivery Accept
   @Put('/delivery/:id/accept')
   async deliveryAccept(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -159,6 +169,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Delivery status
   @Put('/delivery/:id/reject')
   async deliveryReject(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -171,6 +182,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Delivery status
   @Put('/delivery/:id/start')
   async deliveryStart(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -183,6 +195,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Delivery status
   @Put('/delivery/:id/complete')
   async deliveryComplete(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -195,6 +208,7 @@ export class RiderController {
     return delivery;
   }
 
+  //Working
   //Delivery details
   @Get('/delivery/:id')
   async deliveryDetailsById(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -216,6 +230,7 @@ export class RiderController {
     return newIssue;
   }
 
+  //Working
   //Issue status
   @Put('update-issue/:id')
   async updateIssue(
@@ -231,12 +246,17 @@ export class RiderController {
     return updatedIssue;
   }
 
+  //Working
   //Issue delete
   @Delete('delete-issue/:id')
-  async deleteIssueById(@Param('id') id: any): Promise<void> {
-    await this.riderService.deleteIssueById(id);
+  async deleteIssueById(@Param('id') id: any): Promise<any> {
+    const res = await this.riderService.deleteIssueById(id);
+    if (res) {
+      return { message: 'Issue Deleted' };
+    }
   }
 
+  //Working
   //Issue search
   @Get('search-issue/:id')
   async searchIssueById(@Param('id') id: any): Promise<IssueEntity> {
@@ -248,7 +268,7 @@ export class RiderController {
     return issue;
   }
 
-  //Not working
+  //Working
   //Issue details
   @Put('issue-details/:id/solved')
   async issueSolved(@Param('id') id: any): Promise<IssueEntity> {

@@ -56,7 +56,7 @@ export class RiderService {
     id: any,
     riderDto: RiderDto,
   ): Promise<RiderEntity> {
-    const rider = await this.riderRepo.findOne(id);
+    const rider = await this.riderRepo.findOne({ where: { rider_id: id } });
 
     if (!rider) {
       throw new NotFoundException('Rider not found');
@@ -91,16 +91,25 @@ export class RiderService {
     return await this.riderRepo.findOne({ where: { rider_id: id } });
   }
 
+  async createDelivery(
+    deliveryData: Partial<DeliveryEntity>,
+  ): Promise<DeliveryEntity> {
+    const newDelivery = this.deliveryRepo.create(deliveryData);
+    return await this.deliveryRepo.save(newDelivery);
+  }
+
   async getAllDeliveries(): Promise<DeliveryEntity[]> {
     return this.deliveryRepo.find();
   }
 
   async getDeliveryDetailsById(id: any): Promise<DeliveryEntity> {
-    return this.deliveryRepo.findOne(id);
+    return this.deliveryRepo.findOne({ where: { delivery_id: id } });
   }
 
   async acceptDelivery(id: any): Promise<DeliveryEntity> {
-    const delivery = await this.deliveryRepo.findOne(id);
+    const delivery = await this.deliveryRepo.findOne({
+      where: { delivery_id: id },
+    });
 
     if (!delivery) {
       throw new NotFoundException('Delivery not found');
@@ -113,7 +122,9 @@ export class RiderService {
   }
 
   async rejectDelivery(id: any): Promise<DeliveryEntity> {
-    const delivery = await this.deliveryRepo.findOne(id);
+    const delivery = await this.deliveryRepo.findOne({
+      where: { delivery_id: id },
+    });
 
     if (!delivery) {
       throw new NotFoundException('Delivery not found');
@@ -127,7 +138,9 @@ export class RiderService {
   }
 
   async startDelivery(id: any): Promise<DeliveryEntity> {
-    const delivery = await this.deliveryRepo.findOne(id);
+    const delivery = await this.deliveryRepo.findOne({
+      where: { delivery_id: id },
+    });
 
     if (!delivery) {
       throw new NotFoundException('Delivery not found');
@@ -141,7 +154,9 @@ export class RiderService {
   }
 
   async completeDelivery(id: any): Promise<DeliveryEntity> {
-    const delivery = await this.deliveryRepo.findOne(id);
+    const delivery = await this.deliveryRepo.findOne({
+      where: { delivery_id: id },
+    });
 
     if (!delivery) {
       throw new NotFoundException('Delivery not found');
@@ -163,7 +178,9 @@ export class RiderService {
     id: any,
     updatedData: Partial<IssueEntity>,
   ): Promise<IssueEntity | null> {
-    const existingIssue = await this.issueRepo.findOne(id);
+    const existingIssue = await this.issueRepo.findOne({
+      where: { issue_id: id },
+    });
 
     if (!existingIssue) {
       throw new NotFoundException('Issue not found');
@@ -173,21 +190,29 @@ export class RiderService {
     return await this.issueRepo.save(existingIssue);
   }
 
-  async deleteIssueById(id: any): Promise<void> {
-    const existingIssue = await this.issueRepo.findOne(id);
+  async deleteIssueById(id: any): Promise<any> {
+    const existingIssue = await this.issueRepo.findOne({
+      where: { issue_id: id },
+    });
 
     if (!existingIssue) {
       throw new NotFoundException('Issue not found');
+    } else {
+      await this.issueRepo.remove(existingIssue);
+      return true;
     }
-    await this.issueRepo.remove(existingIssue);
   }
 
   async getIssueById(id: any): Promise<IssueEntity | null> {
-    return await this.issueRepo.findOne(id);
+    return await this.issueRepo.findOne({
+      where: { issue_id: id },
+    });
   }
 
   async markIssueAsSolved(id: any): Promise<IssueEntity | null> {
-    const existingIssue = await this.issueRepo.findOne(id);
+    const existingIssue = await this.issueRepo.findOne({
+      where: { issue_id: id },
+    });
 
     if (!existingIssue) {
       throw new NotFoundException('Issue not found');
