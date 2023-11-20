@@ -84,7 +84,7 @@ export class RiderController {
     return this.riderService.updateRiderProfileById(id, riderDto);
   }
 
-  //Working
+
   //Delete Rider Profile
   @Delete('/delete-rider/:id')
   async deleteProfileById(@Param('id') id: any): Promise<any> {
@@ -94,14 +94,14 @@ export class RiderController {
     }
   }
 
-  //Working
+ 
   //Show all Riders
   @Get('all-rider')
   async allRider(): Promise<RiderEntity[]> {
     return this.riderService.getAllRiders();
   }
 
-  //Working
+ 
   //Search Rider by id
   @Get('search-rider/:id')
   async searchRiderById(@Param('id') id: number): Promise<RiderEntity> {
@@ -114,7 +114,7 @@ export class RiderController {
     return rider;
   }
 
-  //Not Working
+
   //Rider logout [Session Destroy]
   @Post('/rider-logout')
   async logout(@Session() session, @Req() request) {
@@ -127,7 +127,7 @@ export class RiderController {
     }
   }
 
-  //Working
+  
   //Delivery Post
   @Post('/create-delivery')
   async createDelivery(
@@ -137,14 +137,14 @@ export class RiderController {
     return newDelivery;
   }
 
-  //Working
+  
   //Show all deliveries
   @Get('/all-deliveries')
   async allDeliveries(): Promise<DeliveryEntity[]> {
     return this.riderService.getAllDeliveries();
   }
 
-  //Working
+  
   //Delivery Details by ID
   @Get('/delivery-details/:id')
   async deliveryDetails(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -156,7 +156,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+ 
   //Delivery Accept
   @Put('/delivery/:id/accept')
   async deliveryAccept(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -169,7 +169,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+ 
   //Delivery status
   @Put('/delivery/:id/reject')
   async deliveryReject(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -182,7 +182,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+ 
   //Delivery status
   @Put('/delivery/:id/start')
   async deliveryStart(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -195,7 +195,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+ 
   //Delivery status
   @Put('/delivery/:id/complete')
   async deliveryComplete(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -208,7 +208,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+ 
   //Delivery details
   @Get('/delivery/:id')
   async deliveryDetailsById(@Param('id') id: any): Promise<DeliveryEntity> {
@@ -220,7 +220,7 @@ export class RiderController {
     return delivery;
   }
 
-  //Working
+  
   //Issue Post
   @Post('/post-issue')
   async postIssue(
@@ -230,7 +230,7 @@ export class RiderController {
     return newIssue;
   }
 
-  //Working
+  
   //Issue status
   @Put('update-issue/:id')
   async updateIssue(
@@ -246,7 +246,7 @@ export class RiderController {
     return updatedIssue;
   }
 
-  //Working
+ 
   //Issue delete
   @Delete('delete-issue/:id')
   async deleteIssueById(@Param('id') id: any): Promise<any> {
@@ -256,7 +256,7 @@ export class RiderController {
     }
   }
 
-  //Working
+ 
   //Issue search
   @Get('search-issue/:id')
   async searchIssueById(@Param('id') id: any): Promise<IssueEntity> {
@@ -268,7 +268,7 @@ export class RiderController {
     return issue;
   }
 
-  //Working
+
   //Issue details
   @Put('issue-details/:id/solved')
   async issueSolved(@Param('id') id: any): Promise<IssueEntity> {
@@ -281,7 +281,7 @@ export class RiderController {
     return updatedIssue;
   }
 
-  //Not working
+  
   //Send mail
   @Post('/sendemail')
   sendEmail(@Body() mydata) {

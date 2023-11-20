@@ -16,8 +16,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
         ignoreTLS: true,
         secure: true,
         auth: {
-          user: 'ahmedadibctg@gmail.com',
-          pass: 'tmzmccfausbigxwq',
+          user: 'rahat57viiia@gmail.com',
+          pass: 'ypqa bboy aven yplw',
         },
       },
     }),

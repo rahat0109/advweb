@@ -63,7 +63,6 @@ export class RiderService {
     }
 
     rider.name = riderDto.name;
-    rider.email = riderDto.email;
     rider.address = riderDto.address;
     rider.phone = riderDto.phone;
 
