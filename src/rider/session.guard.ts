@@ -9,4 +9,4 @@ export class SessionGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     return request.session.email !== undefined;
   }
-}
+} 

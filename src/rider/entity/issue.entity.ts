@@ -17,4 +17,4 @@ export class IssueEntity extends BaseEntity {
   @Column()
   issue_status: string;
   rider: any;
-}
+} 

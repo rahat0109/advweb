@@ -36,4 +36,4 @@ export class RiderDto {
   phone: string;
 
   filename: string;
-}
+} 

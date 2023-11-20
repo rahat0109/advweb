@@ -38,4 +38,4 @@ export class RiderEntity extends BaseEntity {
 
   @OneToMany(() => DeliveryEntity, (delivery) => delivery.rider) // Define the one-to-many relationship
   deliveries: DeliveryEntity[]; // Add an array of deliveries
-}
+} 
